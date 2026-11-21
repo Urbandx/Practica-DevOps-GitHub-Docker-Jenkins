@@ -61,6 +61,23 @@ El `Jenkinsfile` define estas etapas:
 5. **Verificar aplicación:** comprueba que backend y frontend respondan.
 6. **Limpieza:** `docker compose down -v` al terminar.
 
+### Jenkins en Docker
+
+La carpeta `jenkins/` levanta un Jenkins (LTS) en un contenedor, con el cliente de Docker y los plugins Git, GitHub, Pipeline y Docker Pipeline ya instalados. El contenedor usa el Docker del equipo mediante `/var/run/docker.sock`.
+
+```bash
+cd jenkins
+docker compose up -d --build
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
+```
+
+1. Abre http://localhost:8080 y pega la contraseña inicial.
+2. Crea el usuario administrador.
+3. Crea un job de tipo **Pipeline** con "Pipeline script from SCM": SCM Git, la URL de este repositorio, rama `*/master` y script `Jenkinsfile`.
+4. Pulsa **Construir ahora**.
+
+Los puertos 8080 (Jenkins), 5000 (API) y 8081 (aplicación) deben estar libres.
+
 ### Requisitos del servidor Jenkins
 
 - Docker y el plugin Docker Compose disponibles para el usuario `jenkins`.
